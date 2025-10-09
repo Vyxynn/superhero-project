@@ -1,16 +1,16 @@
 const express = require("express");
 const fs = require("fs").promises;
 const path = require("path");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 const DATA_FILE = path.join(__dirname, "data", "heroes.json");
 const heroFields = require("./config/heroInputs.config.js");
-
 
 // const { MongoClient } = require("mongodb");
 // const mongoURI = `mongodb+srv://${process.env.mongoUser}:${process.env.mongoPass}@cluster0.jnfy9vk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -56,15 +56,17 @@ app.get("/superDB", (req, res) => {});
 //   });
 // });
 
+//this is where the client adds a new hero
 app.get("/", (req, res) => {
-  res.render('heroForm', { heroFields });
-  });
+  res.render("heroForm", { heroFields });
+});
 
-app.get("/heroes", async (req, res) => {
+//returns a list of heros to clien
+app.get("/heroesList", async (req, res) => {
   try {
     const heroes = await readHeroes();
 
-    if (req.accepts("html")) {
+    if (req.accepts("html")) { //checks if client accepts html
       res.render("heroList", { heroes });
     } else {
       res.json({ success: true, count: heroes.length, data: heroes });
@@ -74,18 +76,17 @@ app.get("/heroes", async (req, res) => {
   }
 });
 
-app.get('/form',(req,res)=>{
-res.render(path.join(__dirname,'views','heroList.ejs'))
-})
-
-
+//this would work if you gave the heroDB file dta
+// app.get("/form", (req, res) => {
+//   res.render(path.join(__dirname, "views", "heroList.ejs"));
+// });
 
 // POSTs
 
+//post route for form page, not a route for client
 app.post("/heroes", async (req, res) => {
   try {
     const heroes = await readHeroes();
-
     const newHero = {
       id: Date.now().toString(),
       superName: req.body.superName,
@@ -99,11 +100,15 @@ app.post("/heroes", async (req, res) => {
     heroes.push(newHero);
     await writeHeroes(heroes);
 
-    res.status(201).json({
-      success: true,
-      message: "Hero successfully created",
-      redirectTo: "/heroes",
-    });
+    // reason for comment: res.json only returns json data. Doesn't give redirect command to browser
+    //res.status.json should be used for errors
+    // res.status(201).json({
+    //   success: true,
+    //   message: "Hero successfully created",
+    //   redirectTo: "/heroesList",
+    // });
+
+    res.redirect('/heroesList');
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
