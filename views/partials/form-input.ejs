@@ -1,12 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/style.css" />
-    <title>Heroes List</title>
-  </head>
-  <body>
-    <h1>Hero List</h1>
-  </body>
-</html>
+<div class="mb-3">
+  <label for="<%= id %>" class="form-label"><%= label %></label>
+  <input
+  type="<%= type %>"
+  class="form-control"
+  id="<%= id %>"
+  name="<%= name %>"
+  placeholder="<%= placeholder || '' %>"
+  <% if (typeof min !== 'undefined') { %>min="<%= min %>"<% } %>
+  <% if (typeof max !== 'undefined') { %>max="<%= max %>"<% } %>
+  <% if (required) { %>required<% } %>
+  />
+  </div>
