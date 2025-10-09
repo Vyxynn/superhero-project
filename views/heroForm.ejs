@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Add Hero</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="styles">
+    <meta charset="UTF-8">
+    <title>Add Hero</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="styles">
 </head>
 <body>
-<div class="container mt-5">
-<h1>Add New Hero</h1>
-<form id="hero-form" action="/heroes" method="post">
-<%- include('partials/form-input', heroFields.superName) %>
-<%- include('partials/form-input', heroFields.realName) %>
-<%- include('partials/form-input', heroFields.superpower) %>
-<%- include('partials/form-input', heroFields.powerLevel) %>
-<button type="submit" class="btn btn-primary">Create Hero</button>
-</form>
-</div>
+    <div class="container mt-5">
+        <h1>Add New Hero</h1>
+        <form id="hero-form" action="/heroes" method="post">
+            <%- include('partials/form-input', heroFields.superName) %>
+            <%- include('partials/form-input', heroFields.realName) %>
+            <%- include('partials/form-input', heroFields.superpower) %>
+            <%- include('partials/form-input', heroFields.powerLevel) %>
+            <button type="submit" class="btn btn-primary">Create Hero</button>
+        </form>
+    </div>
+    <script src="/js/validation.js"></script>
 </body>
 </html>

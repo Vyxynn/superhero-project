@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-const DATA_FILE = path.join(__dirname, "data", "heroes.json");
+const DATA_FILE = path.join(__dirname, "data", "heroes.json");//path to hero db json
 const heroFields = require("./config/heroInputs.config.js");
 
 // const { MongoClient } = require("mongodb");
@@ -17,10 +17,11 @@ const heroFields = require("./config/heroInputs.config.js");
 // const mongoClient = new MongoClient(mongoURI);
 const PORT = 3000;
 
+//reads hero datajson
 async function readHeroes() {
   try {
-    const data = await fs.readFile(DATA_FILE, "utf8");
-    return JSON.parse(data);
+    const data = await fs.readFile(DATA_FILE, "utf8");//reads json data fromlocal database
+    return JSON.parse(data);//turns json data into JS object
   } catch (err) {
     return [];
   }
@@ -28,40 +29,27 @@ async function readHeroes() {
 
 async function writeHeroes(heroes) {
   await fs.writeFile(DATA_FILE, JSON.stringify(heroes, null, 2));
-}
+};
 
+//creates hero db json if it isn't already present
 async function initDataFile() {
   try {
     await fs.access(DATA_FILE);
   } catch (err) {
     await writeHeroes([]);
   }
-}
-// mongoClient
-//   .connect(mongoURI)
-//   .then((client) => {
-//     console.log("✅ Connected to MongoDB Atlas!");
-//   })
-//   .catch((error) => console.error("❌ MongoDB Connection Error", error));
-
-app.get("/superDB", (req, res) => {});
+};
 
 // GETs
 
-// app.get("/", async (req, res) => {
-//   const fileData = await readHeroes();
-//   res.json({
-//     message: fileData,
-//     success: "true",
-//   });
-// });
+
 
 //this is where the client adds a new hero
 app.get("/", (req, res) => {
   res.render("heroForm", { heroFields });
 });
 
-//returns a list of heros to clien
+//returns a list of heros to client
 app.get("/heroesList", async (req, res) => {
   try {
     const heroes = await readHeroes();
